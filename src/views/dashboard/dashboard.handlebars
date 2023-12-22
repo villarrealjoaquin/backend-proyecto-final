@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+
+<body>
+  <h1 class="text-center">Usuarios en el Dashboard</h1>
+
+  <ul class="">
+    {{#each users}}
+    <li>
+      <span>
+        {{this.first_name}} {{this.last_name}} - {{this.email}} - Edad: {{this.age}} - Role: {{this.role}}
+      </span>
+      <select id="roleSelect-{{this.id}}">
+        <option value="">Seleccione un rol</option>
+        <option value="user">Usuario</option>
+        <option value="moderator">Moderador</option>
+        <option value="admin">Administrador</option>
+      </select>
+      <button class="btn btn-success btn-sm ml-2" onclick="changeRole('{{this.id}}')">Cambiar role</button>
+      <button class="btn btn-danger btn-sm ml-2" onclick="deleteUser('{{this.id}}')">Eliminar</button>
+    </li>
+    {{/each}}
+  </ul>
+</body>
+
+</html>
+
+<script>
+  async function changeRole(userId) {
+    const roleSelect = document.getElementById(`roleSelect-${userId}`);
+    const selectedRole = roleSelect.value;
+
+    const response = await fetch('/api/users/dashboard/change-role', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userId, role: selectedRole })
+    });
+  }
+
+  async function deleteUser(userId) {
+    try{
+      const response = await fetch(`/api/users/dashboard/delete-user/${userId}`, {
+        method: 'DELETE',
+      });
+    } catch(error) {
+      throw error;
+    }
+  }
+</script>

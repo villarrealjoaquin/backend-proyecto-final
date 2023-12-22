@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Detalles del Carrito</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container mt-4">
+    <h1>Detalles del Carrito</h1>
+
+    <h2>Productos en el carrito:</h2>
+    <ul class="list-group pt-5">
+      {{#each cartItems}}
+      <li class="list-group-item text-black">
+        <h2>{{this.product.email}}</h2>
+        <strong>{{this.product.title}}</strong> - Precio: ${{this.product.price}}
+        <p>cantidad: <span>{{this.quantity}}</span></p>
+        <button class="btn btn-danger"
+          onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')">Eliminar del
+          carrito</button>
+      </li>
+      {{/each}}
+    </ul>
+    <button class="btn btn-success mt-2" onclick="checkout()" id="finalizarCompra">Finalizar
+      compra</button>
+  </div>
+
+  <script>
+    async function deleteProductsFromCart(cartId, productId) {
+      try {
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+          method: 'DELETE',
+        });
+
+        console.log(response)
+
+      } catch (error) {
+        console.log('entre catch')
+        console.error(error);
+      }
+    }
+
+    async function checkout() {
+      try {
+        const res = await fetch(`/api/carts/purchase`, {
+          method: 'PUT',
+        });
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
