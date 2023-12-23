@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard</title>
   <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;      
+      background-color: #37393b;
+    }
+
     .container {
       display: flex;
       justify-content: center;
@@ -18,10 +25,11 @@
     }
 
     .card {
-      background-color: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      background-color: #343a40;
+      color: #ffffff;
+      border: 2px solid #140709;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .card-body {
@@ -31,42 +39,47 @@
     .display-4 {
       font-size: 2.5rem;
       margin-bottom: 1.5rem;
+      color: #ffffff;
     }
 
     .user-info p {
       font-size: 1.25rem;
       margin-bottom: 0.75rem;
+      color: #adb5bd;
     }
 
     .btn-danger {
       background-color: #dc3545;
-      color: #fff;
-      border: 1px solid #dc3545;
+      color: #ffffff;
+      border: 2px solid #dc3545;
+      transition: background-color 0.3s ease;
     }
 
     .btn-danger:hover {
       background-color: #c82333;
-      border: 1px solid #c82333;
+      border: 2px solid #c82333;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div class="center-container">
       <div class="card">
         <div class="card-body text-center">
-          <h1 class="display-4">Welcome, {{user.first_name}} {{user.last_name}}!</h1>
+          <h1 class="display-4">¡Bienvenido, {{user.first_name}} {{user.last_name}}!</h1>
           <div class="user-info">
             <p>Email: {{user.email}}</p>
-            <p>Role: {{user.role}}</p>
-            <p>Age: {{user.age}}</p>
+            <p>Rol: {{user.role}}</p>
+            <p>Edad: {{user.age}}</p>
           </div>
           <form method="post" action="/api/sessions/logout">
-            <button type="submit" class="btn btn-danger">Log out</button>
+            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </body>
+
 </html>

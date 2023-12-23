@@ -137,6 +137,7 @@ module.exports = (app) => {
     }
   })
 
+ 
   app.get('/chatHandlebars', async (req, res) => {
     res.render('chat/chat', {})
   })

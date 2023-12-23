@@ -54,7 +54,6 @@ class CartRepository {
   async addProductToCart(cartId, productId, owner) {
     try {
       const findProduct = await productModel.find({ owner: { $in: [owner] } });
-
       const isOwnerProduct = findProduct.some(product => product._id.toString() === productId.id);
       if (isOwnerProduct) return 'Este producto le pertenece';
 

@@ -140,7 +140,6 @@ class ProductsController {
   async deleteProduct(req, res) {
     const productId = req.params.pid;
     const owner = req.user.email;
-    console.log({ productId, owner });
     try {
       if (!productId) {
         CustomError.createError({
@@ -152,15 +151,12 @@ class ProductsController {
       }
 
       const existingProduct = await productRepository.getProductById(productId);
-      console.log(existingProduct, 'existing');
       if (!existingProduct) return res.status(404).json({ error: 'Producto no encontrado' });
       if (existingProduct[0].owner === owner) {
         await productRepository.deleteProduct(productId);
-        console.log('pase 3');
 
         res.status(204).end();
       } else {
-        console.log('erorr');
         res.status(403).json({ error: 'No tienes permisos para borrar este producto.' });
       }
     } catch (error) {

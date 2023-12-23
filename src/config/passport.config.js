@@ -52,8 +52,7 @@ const initializePassport = () => {
         return done(error);
       }
     }
-  )
-  );
+  ));
 
   Passport.use("login", new LocalStrategy({ usernameField: "email" }, async (username, password, done) => {
     try {

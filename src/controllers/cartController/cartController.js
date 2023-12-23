@@ -47,7 +47,7 @@ class CartController {
 
   async addProduct(req, res) {
     try {
-      const cartId = req.user?.user.cart._id;
+      const cartId = req?.user?.user?.cart?._id;
       const owner = req.user.user.email
       const product = req.body.id;
 
@@ -182,7 +182,6 @@ class CartController {
   async purchase(req, res) {
     try {
       const cartId = req?.user?.user?.cart?._id;
-      console.log(cartId);
       const cart = await CartRepository.getProducts(cartId);
       const userMail = req?.user?.user?.email
 

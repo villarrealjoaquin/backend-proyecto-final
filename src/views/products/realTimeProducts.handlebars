@@ -1,8 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Real Time Products</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #212529;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    h1 {
+      color: #007bff;
+    }
+
+    input {
+      padding: 8px;
+      margin-right: 8px;
+      background-color: #343a40;
+      color: #ffffff;
+      border: none;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #28a745;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .ul-custom-real {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .li-custom-real {
+      background-color: #343a40;
+      border: 1px solid #495057;
+      border-radius: 4px;
+      margin: 8px 0;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button.delete-button {
+      padding: 6px 12px;
+      background-color: #dc3545;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -11,20 +66,18 @@
   <input type="text" id="product-name-input" placeholder="Nombre del producto">
   <button id="add-product-button">Agregar Producto</button>
 
-  <ul id="product-list">
+  <ul id="product-list" class="ul-custom-real">
     {{#each products}}
-    <li>
+    <li class="li-custom-real" data-product-id="{{this.id}}">
       <span>{{this.title}}</span>
+      <button class="delete-button">Eliminar</button>
     </li>
     {{/each}}
   </ul>
 
-
-
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    console.log(socket)
 
     socket.on('initial products', (products) => {
       renderProducts(products);
@@ -36,18 +89,19 @@
 
       products.forEach((product) => {
         const listItem = document.createElement('li');
+        listItem.setAttribute('data-product-id', product.id);
+
         const productSpan = document.createElement('span');
         productSpan.textContent = product.title;
         listItem.appendChild(productSpan);
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Eliminar';
+        deleteButton.classList.add('delete-button');
         deleteButton.addEventListener('click', () => {
           deleteProduct(product.id);
         });
         listItem.appendChild(deleteButton);
-
-        listItem.setAttribute('data-product-id', product.id);
 
         productList.appendChild(listItem);
       });
@@ -56,6 +110,8 @@
     function addProduct(newProduct) {
       const productList = document.getElementById('product-list');
       const listItem = document.createElement('li');
+      listItem.setAttribute('data-product-id', newProduct.id);
+
       const productSpan = document.createElement('span');
       productSpan.textContent = newProduct.title;
       listItem.appendChild(productSpan);
@@ -64,17 +120,16 @@
       listItem.appendChild(deleteButton);
 
       productList.appendChild(listItem);
-
-      productList.appendChild(listItem);
     }
 
     function createDeleteButton(productId) {
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Eliminar';
+      deleteButton.classList.add('delete-button');
       deleteButton.addEventListener('click', () => {
         const listItem = deleteButton.parentNode;
         listItem.remove();
-        socket.emit('delete product', productId)
+        socket.emit('delete product', productId);
       });
 
       return deleteButton;
@@ -88,14 +143,15 @@
         productList.removeChild(listItem);
       }
 
-      socket.emit('delete product', productId)
+      socket.emit('delete product', productId);
     }
 
     const addProductButton = document.getElementById('add-product-button');
     addProductButton.addEventListener('click', () => {
       const productNameInput = document.getElementById('product-name-input');
-      const productName = productNameInput.value;
-      if (productName.trim() !== '') {
+      const productName = productNameInput.value.trim();
+
+      if (productName !== '') {
         const newProduct = { id: Date.now(), title: productName };
         addProduct(newProduct);
         socket.emit('new product', newProduct);
