@@ -3,7 +3,7 @@ const ProductRepository = require('../../dao/products/productRepository/productR
 const CustomError = require('../../services/errors/CustomError');
 const EErrors = require('../../services/errors/enums');
 const { generateParamErrorInfo } = require('../../services/errors/info');
-
+const { sendPurchaseEmail } = require('../../mail/mail.js');
 const productRepository = new ProductRepository();
 
 class CartController {
@@ -63,7 +63,6 @@ class CartController {
     let cartId;
     try {
       cartId = req.params.cid;
-      console.log(cartId);
       const productId = req.params.pid;
 
       await CartRepository.deleteProduct(cartId, productId);
@@ -181,11 +180,11 @@ class CartController {
   }
 
   async purchase(req, res) {
-
     try {
-      const cartId = req.user;
+      const cartId = req?.user?.user?.cart?._id;
       console.log(cartId);
       const cart = await CartRepository.getProducts(cartId);
+      const userMail = req?.user?.user?.email
 
       if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -203,8 +202,12 @@ class CartController {
       }
 
       await CartRepository.deleteProductsFromCart(cartId);
+
+      await CartRepository.formatCartItems(cart);
+      await sendPurchaseEmail(userMail, cart);
       res.status(200).json({ message: 'Compra realizada con éxito' });
     } catch (error) {
+      console.log(error);
       res.status(404).json(error.message);
     }
   }

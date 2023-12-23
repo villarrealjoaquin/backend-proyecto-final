@@ -1,32 +1,103 @@
-<div class="container">
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="col-md-4 my-5">
-            <h1 class="text-white">Sign Up!</h1>
-            <form>
-                <div class="mb-3">
-                    <label class="form-label text-white">Name</label>
-                    <input type="text" class="form-control" id="first_name">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-white">Last Name</label>
-                    <input type="text" class="form-control" id="last_name">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-white">Email</label>
-                    <input type="text" class="form-control" id="email">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-white">Age</label>
-                    <input type="text" class="form-control" id="age">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-white">Password</label>
-                    <input type="password" class="form-control" id="password">
-                </div>
-                <button type="button" class="btn btn-dark" id="btnRegister">Submit</button>
-            </form>
-        </div>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #212529;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+    }
+
+    .registration-form {
+      background-color: #343a40;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-form h1 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      color: #fff;
+    }
+
+    .form-control {
+      background-color: #495057;
+      color: #fff;
+      border: 1px solid #495057;
+    }
+
+    .form-control:focus {
+      background-color: #495057;
+      color: #fff;
+      border: 1px solid #ced4da;
+    }
+
+    .btn-dark {
+      background-color: #343a40;
+      color: #fff;
+      border: 1px solid #343a40;
+    }
+
+    .btn-dark:hover {
+      background-color: #495057;
+      border: 1px solid #495057;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="col-md-4">
+      <div class="registration-form">
+        <h1>Sign Up!</h1>
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="first_name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="last_name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" id="email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="text" class="form-control" id="age">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" id="password">
+          </div>
+          <button type="button" class="btn btn-success" id="btnRegister">Submit</button>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
+</body>
+
+</html>
+
 
 <script src="register/register.js"></script>

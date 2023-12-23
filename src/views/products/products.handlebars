@@ -1,65 +1,155 @@
-<div class="d-flex justify-content-center align-items-center vh-100">
-  <div class="bg-white rounded p-3 product-list flex-column align-items-center shadow">
-    <h1 class="text-dark">Product List</h1>
-    <ul class="list-group">
-      {{#each products}}
-      <li class="list-group-item gap-3 text-dark d-flex justify-content-between align-items-center">
-        <span class="">{{this.title}}</span>
-        <div>
-          <a href="/products/{{this.id}}" class="btn btn-primary btn-sm">View Details</a>
-          <button class="btn btn-success btn-sm ml-2 add-to-cart" data-product-id="{{this.id}}" data-product-title="
-            {{this.title}}" data-product-price="{{this.price}}">Add to
-            Cart</button>
-          <button type="button" id="btn-delete" class="btn btn-danger btn-sm ml-2 add-to-cart"
-            data-product-id="{{this.id}}">Delete
-            Product</button>
-        </div>
-      </li>
-      {{/each}}
-      <h2 class="mt-3">Add Product</h2>
-      <form id="productForm" class="mt-3">
-        <div class="form-group">
-          <input type="text" class="form-control" id="title" placeholder="Title" required>
-        </div>
-        <div class="form-group">
-          <input type="number" class="form-control" id="price" placeholder="Price" required>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="stock" placeholder="stock" required>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="description" placeholder="description" required>
-        </div>
-        <button type="submit" class="btn btn-primary mt-4">Add Product</button>
-      </form>
-    </ul>
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="mt-3">
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          {{#if hasPrevPage}}
-          <li class="page-item">
-            <a class="page-link text-black" href="{{prevPageLink}}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              {{page}}
-            </a>
-          </li>
-          {{/if}}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: #fff;
+    }
 
-          {{#if hasNextPage}}
-          <p class="text-white">batata</p>
-          <li class="page-item">
-            <a class="page-link text-black" href="{{nextPageLink}}" aria-label="Next">
-              {{page}}
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-          {{/if}}
-        </ul>
-      </nav>
+    .product-list {
+      width: 80%;
+      margin: auto;
+      background-color: #2e2e2e;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      margin-top: 50px;
+    }
+
+    .product-list h1,
+    .product-list h2 {
+      margin-bottom: 20px;
+    }
+
+    .ul-custom {
+      list-style: none;
+      padding: 0;
+    }
+
+    .li-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f1f1f;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .li-custom span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .li-custom div {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn {
+      margin-left: 10px;
+      cursor: pointer;
+      color: #fff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+    }
+
+    .btn-danger {
+      background-color: #FF5733;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      border-radius: 4px;
+      background-color: #1f1f1f;
+      color: #fff;
+    }
+
+    button {
+      cursor: pointer;
+      color: #fff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="d-flex justify-content-center align-items-center vh-100">
+    <div class="product-list">
+      <h1>Product List</h1>
+      <ul class="ul-custom">
+        {{#each products}}
+        <li class="li-custom">
+          <span>{{this.title}}</span>
+          <div>
+            <a href="/products/{{this.id}}" class="btn btn-success">View Detail</a>
+            <button class="btn btn-success add-to-cart" data-product-id="{{this.id}}"
+              data-product-title="{{this.title}}" data-product-price="{{this.price}}">Add to cart</button>
+            <button type="button" id="btn-delete" class="btn btn-danger btn-sm ml-2 btn-delete"
+              data-product-id="{{this.id}}">Delete Product</button>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+      <div>
+        <h2>Add Product</h2>
+        <form id="productForm">
+          <div class="form-group">
+            <input type="text" id="title" placeholder="Title" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="code" placeholder="code" required>
+          </div>
+          <div class="form-group">
+            <input type="number" id="price" placeholder="Price" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="stock" placeholder="stock" required>
+          </div>
+          <div class="form-group">
+            <textarea id="description" placeholder="Description" required></textarea>
+          </div>
+          <button type="submit">Add product</button>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
+</body>
+</html>
 
 <script>
   const addToCartButtons = document.querySelectorAll('.add-to-cart');
@@ -128,18 +218,29 @@
         document.getElementById("stock").value = "";
         document.getElementById("description").value = "";
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error al realizar la solicitud POST:", error);
     }
   });
 
-  const btnDelete = document.getElementById('btn-delete');
-  btnDelete.addEventListener('click', async (event) => {
-    const productId = btnDelete.getAttribute('data-product-id');
-    const res = await fetch(`/api/products/${productId}`, {
-      method: "DELETE",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', async (event) => {
+        const productId = event.target.getAttribute('data-product-id');
+        console.log(productId);
+        try {
+          const res = await fetch(`/api/products/${productId}`, {
+            method: "DELETE",
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+          });
+          console.log(res);
+        } catch (error) {
+          console.error(error);
+        }
+      });
     });
-    console.log(res);
   });
 </script>

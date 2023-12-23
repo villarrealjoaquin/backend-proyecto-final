@@ -43,7 +43,6 @@ module.exports = (app) => {
         res.redirect('/')
       }
     } catch (error) {
-      console.log(`[ERROR] -> ${error}`);
       res.status(500).json({ error: 'Error al obtener los productos' });
     }
   });
@@ -88,20 +87,17 @@ module.exports = (app) => {
         res.redirect('/')
       }
     } catch (error) {
-      console.log(`[ERROR] -> ${error}`);
       res.status(500).json({ error: 'Error al obtener los productos' });
     }
   });
 
   app.get('/products/:productId', async (req, res) => {
     try {
-      const pm = require('../dao/products/productsService/productManager');
-      const productId = parseInt(req.params.productId);
-      const product = await pm.getProductById(productId);
-
-      if (product) {
-        res.render('products/productDetails', { product });
-        console.log(product)
+      const pm = require('../dao/products/productRepository/productRepository');
+      const truePm = new pm()
+      const products = await truePm.getProductById(req.params.productId);
+      if (products) {
+        res.render('products/productDetails', { product: products[0].toObject() });
       } else {
         res.status(404).json({ error: 'Producto no encontrado' });
       }
@@ -111,6 +107,7 @@ module.exports = (app) => {
     }
   });
 
+
   app.get('/carts', validateToken, async (req, res) => {
     try {
       const cartId = req.user.cart;
@@ -119,7 +116,6 @@ module.exports = (app) => {
       if (cartItems) res.render('cart/cart', { cartItems, cartId });
       else res.status(404).json({ error: 'Producto no encontrado' });
     } catch (error) {
-      console.log(`[ERROR] -> ${error}`);
       res.status(500).json({ error: 'Error al obtener los detalles del carrito' });
     }
   });
@@ -137,7 +133,6 @@ module.exports = (app) => {
        }));
       res.render('dashboard/dashboard', { users: flattenedUsers });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error: 'Error al obtener los usuarios' });
     }
   })

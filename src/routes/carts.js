@@ -19,7 +19,7 @@ module.exports = app => {
     router.post('/products', cartsController.addProduct);
     router.delete('/:cid/products/:pid', cartsController.deleteProductFromCart);
     router.put('/:cid/products/:pid', cartsController.updateProductsQuantity);
-    router.put('/:cid', cartsController.updateProductsInCart);
+    // router.put('/:cid', cartsController.updateProductsInCart);
     router.put('/purchase', cartsController.purchase);
     router.delete('/:cid', cartsController.deleteProductsFromCart);
 }

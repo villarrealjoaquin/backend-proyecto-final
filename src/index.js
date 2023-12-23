@@ -2,16 +2,16 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const exphbs = require('express-handlebars');
-const PORT = 8080;
 const routes = require('./routes');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const configureSockets = require('./controllers/sockets/socketsController');
 const addLoger = require('./utils/logger')
-const { environment } = require('./config/config');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 require('dotenv').config()
+
+const PORT = process.env.PORT || 3000;
 
 const swaggerOptions = {
   definition: {
@@ -21,7 +21,7 @@ const swaggerOptions = {
       description: "Documentacion del uso de la API ecommerce para coderhouse"
     }
   },
-  apis: [`./src/docs/**/*.yaml`], 
+  apis: [`./src/docs/**/*.yaml`],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -52,8 +52,8 @@ class Server {
 
     this.app.get("/loggerTest", (req, res) => {
       req.logger?.http("Alerta")
-      res.send({message: "Prueba de logger!"})
-  })
+      res.send({ message: "Prueba de logger!" })
+    })
   }
 
   initializeSocket() {
@@ -65,7 +65,7 @@ class Server {
   }
 
   listen() {
-    this.server.listen(PORT, () => { console.log(`http://localhost:${PORT}`) });
+    this.server.listen(PORT, '0.0.0.0', () => { console.log(`http://localhost:${PORT}`) });
     mongoose.connect(process.env.MONGO_URL);
   }
 }

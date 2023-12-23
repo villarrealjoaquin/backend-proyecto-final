@@ -1,62 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalles del Carrito</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #343a40;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+    }
+
+    .list-group {
+      border: 1px solid #495057;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    .list-group-item {
+      background-color: #495057;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .list-group-item:hover {
+      background-color: #566573;
+    }
+
+    .list-group-item h2 {
+      margin-bottom: 5px;
+      color: #dc3545;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container mt-4">
-    <h1>Detalles del Carrito</h1>
+    <h1 class="mb-4">Detalles del Carrito</h1>
 
     <h2>Productos en el carrito:</h2>
-    <ul class="list-group pt-5">
+    <ul class="list-group pt-3">
       {{#each cartItems}}
-      <li class="list-group-item text-black">
-        <h2>{{this.product.email}}</h2>
-        <strong>{{this.product.title}}</strong> - Precio: ${{this.product.price}}
-        <p>cantidad: <span>{{this.quantity}}</span></p>
+      <li class="list-group-item">
+        <strong class="text-white">{{this.product.title}}</strong>
+        <span class="text-white"> - Precio: ${{this.product.price}}</span>
+        <p class="text-white">Cantidad: <span>{{this.quantity}}</span></p>
         <button class="btn btn-danger"
           onclick="deleteProductsFromCart('{{../cartId}}', '{{this.product._id}}')">Eliminar del
           carrito</button>
       </li>
       {{/each}}
     </ul>
-    <button class="btn btn-success mt-2" onclick="checkout()" id="finalizarCompra">Finalizar
+    <button class="btn btn-success mt-3" onclick="checkout()" id="finalizarCompra">Finalizar
       compra</button>
   </div>
-
-  <script>
-    async function deleteProductsFromCart(cartId, productId) {
-      try {
-        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
-          method: 'DELETE',
-        });
-
-        console.log(response)
-
-      } catch (error) {
-        console.log('entre catch')
-        console.error(error);
-      }
-    }
-
-    async function checkout() {
-      try {
-        const res = await fetch(`/api/carts/purchase`, {
-          method: 'PUT',
-        });
-        console.log(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-  </script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
+<script>
+  async function deleteProductsFromCart(cartId, productId) {
+    try {
+      const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+        method: 'DELETE',
+      });
+
+      console.log(response)
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function checkout() {
+    try {
+      const res = await fetch(`/api/carts/purchase`, {
+        method: 'PUT',
+      });
+
+      if (res?.status === 200) {
+        window.location.href = '/checkout';
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

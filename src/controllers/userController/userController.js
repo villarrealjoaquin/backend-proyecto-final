@@ -190,7 +190,6 @@ class UserController {
   async getUserById(req, res) {
     try {
       const userId = req.params.uid;
-
       const user = await userRepository.getUserById(userId);
 
       if (!user) {
@@ -236,12 +235,9 @@ class UserController {
   async deleteUser(req, res) {
     try {
       const userId = req.params.id;
-      console.log('entre delete');
       await userRepository.deleteUserById(userId);
 
-
       res.status(200).json({ message: 'Usuario eliminado con éxito.' });
-      // res.redirect('/dashboard');
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Error al eliminar el usuario' });
@@ -258,15 +254,12 @@ class UserController {
       }
 
       const user = await userRepository.getUserById(userId);
-
-
       if (!user) {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
 
       user[0].role = role;
       await user[0].save();
-
       res.status(200).json({ message: 'Role cambiado con éxito', user: user });
     } catch (error) {
       console.error('Error al cambiar el role:', error);

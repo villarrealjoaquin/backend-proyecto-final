@@ -24,20 +24,17 @@ class ProductRepository {
   }
 
   async addProduct({ productData, owner }) {
-    console.log({ productData, owner }, 'valido');
     try {
       if (await this.isValidateCode(productData.code)) {
         return 'Este producto ya existe!';
       }
-      const user = await userModel.findOne({ email: owner }); 
-      const isPremiumUser = user && user.isPremium;
-      const productOwner = isPremiumUser ? owner : 'admin';
       const newProductSave = new productModel({
         status: true,
         thumbnails: [],
-        owner: productOwner,
+        owner,
         ...productData,
       });
+
       await newProductSave.save();
       return newProductSave;
     } catch (error) {

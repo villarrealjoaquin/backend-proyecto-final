@@ -87,6 +87,7 @@ class ProductsController {
   async addProduct(req, res) {
     let productData = req.body;
     const owner = req.user.email;
+
     try {
       for (const field of requiredFields) {
         if (!productData.hasOwnProperty(field)) {
@@ -108,6 +109,7 @@ class ProductsController {
       res.status(500).json({ code: EErrors.INVALID_TYPES_ERROR, cause: generateProductErrorInfo(productData), error: error.message });
     }
   }
+
 
   async updateProduct(req, res) {
     const productId = parseInt(req.params.pid);
@@ -138,6 +140,7 @@ class ProductsController {
   async deleteProduct(req, res) {
     const productId = req.params.pid;
     const owner = req.user.email;
+    console.log({ productId, owner });
     try {
       if (!productId) {
         CustomError.createError({
@@ -147,17 +150,21 @@ class ProductsController {
           code: EErrors.INVALID_PARAM
         });
       }
+
       const existingProduct = await productRepository.getProductById(productId);
+      console.log(existingProduct, 'existing');
       if (!existingProduct) return res.status(404).json({ error: 'Producto no encontrado' });
       if (existingProduct[0].owner === owner) {
-        console.log('hello')
         await productRepository.deleteProduct(productId);
-        
+        console.log('pase 3');
+
         res.status(204).end();
       } else {
+        console.log('erorr');
         res.status(403).json({ error: 'No tienes permisos para borrar este producto.' });
       }
     } catch (error) {
+      console.log(error);
       res.status(500).json({ code: EErrors.INVALID_PARAM, cause: generateParamErrorInfo(productId), error: error.message });
     }
   }

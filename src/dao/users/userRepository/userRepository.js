@@ -6,12 +6,10 @@ class UserRepository {
       const existingUser = await userModel.findOne({ email: user.email });
 
       if (existingUser) {
-        console.log('El usuario ya existe.');
         return false;
       }
 
       await userModel.create(user);
-      console.log('Usuario registrado con éxito.');
 
       return true;
     } catch (error) {
@@ -25,7 +23,6 @@ class UserRepository {
       const userLogged = await userModel.findOne({ email: username, password: password }) || null;
 
       if (userLogged) {
-        console.log('Usuario autenticado!');
 
         if (username === 'adminCoder@coder.com' && password === 'adminCod3r123') {
           userLogged.role = 'admin';
@@ -49,18 +46,14 @@ class UserRepository {
     try {
       return await userModel.find({ lastConnection: { $lt: inactiveThreshold } });
     } catch (error) {
-      console.log(error);
       return null;
     }
   }
 
   async deleteUserById(userId) {
     try {
-      console.log('entre delete 2');
       return await userModel.findByIdAndDelete(userId);
     } catch (error) {
-      console.log(error);
-      console.log('entre delete 3');
       return null;
     }
   }
@@ -110,10 +103,8 @@ class UserRepository {
   async getAllUsers() {
     try {
       const users = await userModel.find();
-      console.log(users);
       return users;
     } catch (error) {
-      console.log('entre');
       console.log(error);
     }
   }

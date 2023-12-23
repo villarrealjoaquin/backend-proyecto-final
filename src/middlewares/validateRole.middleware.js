@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const validateRole = (role) => (req, res, next) => {
   const { coderToken } = req.cookies;
 
-  console.log(coderToken, 'entre');
-
   if (!coderToken) return res.status(401).json({ message: 'Invalid Token' });
 
   const admin = 'admin';

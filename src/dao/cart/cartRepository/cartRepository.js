@@ -62,7 +62,6 @@ class CartRepository {
       if (!cart) throw new Error('Carrito no encontrado');
 
       const existingProduct = cart?.products.find((product) => product.product._id.toString() === productId);
-
       if (existingProduct) {
         existingProduct.quantity += 1;
       } else {
@@ -86,7 +85,7 @@ class CartRepository {
       if (productIndex === -1) {
         throw new Error('Producto no encontrado en el carrito');
       }
-  
+
       cart.products.splice(productIndex, 1);
       await cart.save();
       return cart;
@@ -150,6 +149,18 @@ class CartRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  async formatCartItems(cart) {
+    return cart.map(item => {
+      return `
+        Producto: ${item.product.title}
+        Descripción: ${item.product.description}
+        Precio: $${item.product.price}
+        Cantidad: ${item.quantity}
+        Total: $${item.quantity * item.product.price}
+      `.trim();
+    }).join('\n\n');
   }
 }
 
